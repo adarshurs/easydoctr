@@ -1,0 +1,140 @@
+  <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <title>Get Site Info</title>
+  <style type="text/css">
+  html, body{
+    height: 100%;
+  }
+  body{
+    background-color: #f0f0f0;
+  }
+
+  .messageboxcont{
+    position: absolute;
+    background-color:rgba(55,0,0,0.5);
+    height: 100%;
+    width:100%;
+    display: table-cell;   
+    vertical-align: middle; 
+    z-index: 100;
+  }
+  .msgbox{
+    height: 70%;
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10%;    
+    background: #fff;
+  }
+  .messageboxheader{
+    height: 50px;
+    width: 100%;
+    background: #f0f0f0;
+
+  }
+  .active{
+    background: #428bca;
+  }
+
+
+  </style>
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+  <script type="text/javascript" src="js/jquery-2.0.3.js"></script>
+  <script type="text/javascript" src="js/bootstrap.min.js"></script>
+  <script type="text/javascript">
+      $(function(){
+        $(".list-group").click(function(e){
+          $(this).addClass("active");
+          console.log(this.children);
+        })
+
+
+      });
+  </script>
+
+  <body style="background-color:#f0f0f0" >
+    <div class="messageboxcont hide">
+        <div class="msgbox">
+          
+           <div class="messageboxheader">
+              <label class="col-md-2 control-label">New Message</label>
+           </div>
+           <div class="form-group">
+            <label class="col-mod-1 control-label">To</label>
+         
+            <div class="col-md-9">
+              <input class="form-control" name="emails" id="emails">
+            </div>
+           </div>
+              
+        </div>
+    </div>
+    <div class="container" style="height:100%;background-color:#fff;" >
+      <div class="jumbotron" style="height:20%;" >
+      <h1>p-mail</h1>
+      <p>An e-mail app for doctors from practo.</p>      
+    </div>
+    <div class="row" style="height:5%;">
+      <div class="col-md-3">
+        <div class="functionscont" style="display:inline-block;height:100%; width:100%">
+          <input type="button" class="btn btn-danger" value="compose">
+          <input type="button" class="btn btn-primary" value="Select All">
+        </div>
+      </div>
+      <div class="col-md-9" style="height:5%;" >
+
+      </div>
+
+    </div>
+    {% if patients %}
+    <div class="row" style="height:70%;" >      
+      <div class="col-md-3" style="min-height:400px; height:100%;" >
+        <div class="panel panel-info" style="height:100%;" >
+        <div class="panel-heading">Patients</div>
+        <div class="list-group scrollablediv" style="height:93%;overflow-x:hidden;overflow-y:scroll">
+        {% for patient in patients %}
+        <a href="#" class="list-group-item" style="padding-left:2px;padding-right:0px;" >
+        <div style="display:inline-block;width:100%; height:80px;">
+          <span style="float:left;width:25%;height:100%;" class="input-group-addon">
+            <input style="margin-top:25px;" type="checkbox">
+          </span>
+          <div style="float:right;width:75%;height:100%;" class="list-group-item active">
+            
+              <h4>{{patient.Name}}</h4>
+              <label>{{patient.Email_Address}}</label>
+            
+          </div>
+        </div>
+        </a>      
+        {% endfor %}
+        </div>
+        
+      </div>
+      </div>
+      {% endif %}
+
+      
+      {% if all_mails %}                
+      <div class="col-md-9" style="height:100%;">
+      <div class="panel panel-info" style="height:100%;" >
+        <div class="panel-heading">All Messages</div>
+        <div class="list-group scrollablediv" style="height:93%;overflow-x:hidden;overflow-y:scroll">
+        {% for mail in all_mails %}
+          <a href="#" class="list-group-item">
+            <div class="mail" style="width:100%;display:inline-block;white-space:nowrap">
+              <label style="width:25%;wrap:no-wrap;">{{mail.To}}</label>              
+              <label style="width:55%;wrap:no-wrap;">{{mail.Message_Content}}</label>
+          </div>
+          </a>
+        {% endfor %}
+        </div>
+      </div>
+      </div>
+      {% endif %}
+      </div>
+      
+      
+    </div>
+  </body>
+</html>
