@@ -4,15 +4,12 @@ import webapp2
 import cgi
 import json
 import requests
-from urlparse import urlparse
 from google.appengine.ext import ndb
 from google.appengine.ext.webapp import template
 from google.appengine.api import mail
 
-patients = ""
-all_emails = ""
 
-
+#message model
 class Message(ndb.Model):
 	Mail_Id = ndb.StringProperty() 
 	To = ndb.StringProperty()
@@ -22,6 +19,7 @@ class Message(ndb.Model):
 	Message_Content = ndb.StringProperty()
 
 
+#patient model
 class Patient(ndb.Model):
 	Id = ndb.StringProperty(required=True)
 	Name = ndb.StringProperty(required=True)
@@ -30,24 +28,20 @@ class Patient(ndb.Model):
 	DOB = ndb.StringProperty()
 	#Sent_Mails = ndb.StructuredProperty(Message, repeated=True)
 
-class SavePatientData:
-	def savePatient(self, pat):
-		patients = Patient.query()
-		isPatientExist = False
-		for p in patients:
-			if p.Id == pat.Id:
-				isPatientExist = True
 
-		if isPatientExist == False:
-			pat.put()
 
-	def updatePatientMail(self,patientIds,mail):
-		patients = Patient.query()
-		for p in patients:
-			for pid in patIds:
-				if p.Id == pid:
-					p.Mails.append(mail)
-					p.put()
+#Save the given patient if that patient does not exist in database
+def SavePatientData(pat):
+	patients = Patient.query()
+	isPatientExist = False
+	
+	for p in patients:
+		if p.Id == pat.Id:
+			isPatientExist = True
+
+	if isPatientExist == False:
+		pat.put()
+
 
 
 # def send_simple_message():
@@ -59,16 +53,21 @@ class SavePatientData:
 #               "subject": "Hello",
 #               "text": "Testing some Mailgun awesomeness!"})
 
-def send_mail_from_gmail(mail):
+
+#Send the message to all recipients and save that message to database
+def send_mail_gmail(mail_cont):
 	user = users.get_current_user()
-	message = mail.EmailMessage()
-	message.sender = user.email()
-	message.to = mail.to
-	message.body = mail.body
-	message.send()
+	for Pat in mail_cont['To']:
+		message = mail.EmailMessage()
+		message.sender = user.email()
+		message.to = Pat['email'] # "adarshrajurs@gmail.com" #
+		message.body = mail_cont['email_text']
+		message.send()
+		msg = Message(Mail_Id = Pat['email'],To = Pat['email'],From = user.email(),Subject = mail_cont['email_sub'],Message_Content = mail_cont['email_text'])
+		msg.put()
 
 
-
+#Main handler
 class MainPage(webapp2.RequestHandler):
 	def get(self):
 		user = users.get_current_user()
@@ -77,19 +76,10 @@ class MainPage(webapp2.RequestHandler):
 			self.redirect(login_url)
 			return
 
-		#send_mail_from_gmail()
-
 		sock = urllib.urlopen("https://patients.apiary.io/patients")
 		data = json.loads(sock.read())
 		sock.close()
-		strpatient = SavePatientData()
-
-		# mail1 = Message(Mail_Id = "abhinav@practo.com",To = "abhinav@practo.com",From="thisDoctor@practo.com",Cc="",Subject="Next week I'll not be available",Message_Content="Hi Everyone, \n Next week I'm going for a vacation. So those who have check up schedules for next week, please visit me after next week. \n For any emergencies you can contact the clinic at any time.\n  Thank You \n Doctor")
-		# mail1.put()
-
-		# mail2 = Message(Mail_Id = "praveen@practo.com",To = "praveen@practo.com",From="thisDoctor@practo.com",Cc="",Subject="Your this month check up is scheduled to",Message_Content="Hi Everyone, \n Next week I'm going for a vacation. So those who have check up schedules for next week, please visit me after next week. \n For any emergencies you can contact the clinic at any time.\n  Thank You \n Doctor")
-		# mail2.put()
-
+		
 
 		for pat in data['items']:
 			p = Patient()
@@ -98,7 +88,7 @@ class MainPage(webapp2.RequestHandler):
 			p.Mobile_Num = pat['mobile']
 			p.Email_Address = pat['email']			
 			p.DOB = pat['dob']			
-			strpatient.savePatient(p)			
+			SavePatientData(p)			
 
 
 		patients = Patient.query()
@@ -129,34 +119,13 @@ class MainPage(webapp2.RequestHandler):
 		#self.response.write(response)
 		self.response.write(template.render("index.html",template_values))
 
+
+# handler to send and save new messages
 class Send(webapp2.RequestHandler):	
 	def post(self):
-		#mail_to_send = {'To':[],'subject':"",'text':""}
-		To = self.request.get('to')
-		subject = self.request.get('subject')
-		text = self.request.get('text')
-
-		self.response.write(subject);
-		# strpatient = SavePatientData()
-		# strpatient.updatePatientMail(ids)
-		#self.redirect('/?')
-
-class FilterMessages(webapp2.RequestHandler):
-	def post(self):
-		mail_id = self.request.POST["email"]
-		if mail_id:
-			MessagesToShow = Message.query(Message.Mail_Id == mail_id).fetch(10)
-			all_emails = MessagesToShow
-
-		#all_emails = Message.query()
-		patients = Patient.query()
-		template_values = {
-			'patients':patients,
-			'all_mails' : MessagesToShow			
-		}
-
-		self.response.write(template.render("index.html",template_values))
+		data = json.loads(self.request.get('mail'))
+		send_mail_gmail(data)			
 		
-	
+
 application = webapp2.WSGIApplication([
-		('/',MainPage),('/sendMessage',Send),('/getMessages',FilterMessages)], debug=True)
+		('/',MainPage),('/sendMessage',Send)], debug=True)

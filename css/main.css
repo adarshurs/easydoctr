@@ -1,0 +1,125 @@
+
+  html, body{
+    height: 100%;
+  }
+
+  body{
+    background-color: black;
+  }
+  .messagecomposercont{
+    position: absolute;
+    background-color:rgba(55,0,0,0.5);
+    height: 60%;
+    min-height: 400px;
+    width:600px;
+    top: 35%;
+    right: 1%;    
+    z-index: 10;
+  }
+
+  .messagecomposerheader,.messagecomposerfooter{
+    height: 40px;
+    width: 100%;
+    background: #404040;
+    display: block;
+  }
+
+  .messagecomposerfooter{
+    height: 35px;
+    vertical-align: bottom;
+    background: #e3e3e3;
+  }  
+  
+ .messagecomposertitle{
+    height: 20px;
+    width: 150px;
+    float: left;
+    padding: 10px;
+    color: #fff;
+    font-size: 14px;    
+  }
+  .messagecomposerbtn{
+    width: 30px;
+    margin-top: 5px;
+    text-align: center;
+    margin-right:5px;
+    float: right;
+    color: #fff;    
+    font-size: 18px;
+    cursor: pointer;
+  }
+
+  .messagecomposerbtn:hover{
+    background: #606060;
+  }
+
+  .minimize{
+    height: 40px;
+    min-height: 40px;
+    width: 300px;
+    top: 95%;
+  }
+   
+  .messagecomposerbox{
+    height: 90%;
+    width: 100%;    
+    background: #fff;
+    border: 1px solid #ccc;
+    overflow: hidden;
+    z-index: 10;
+  }
+
+  #recipients_box{
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+    height: auto;
+    min-height: 40px;
+    max-height: 80px;
+  }
+
+  #email_text_box{
+    width: 100%;
+    height: 100%;        
+  } 
+
+  .scrollablediv{
+    min-height:400px;
+    overflow-x:hidden;
+    overflow-y:scroll
+  }
+
+  .messagecontentcont{
+    display: block;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    height: 100%;
+    width: 100%;
+    background: rgba(40,40,40,0.6);
+    z-index: 100;
+  }
+
+  .messagebox{
+    margin-top: 10%;   
+    width: 60%;
+    margin-left: 20%;
+    height:400px;
+  }
+
+  #message_header{
+    display: inline-block;
+    width: 100%;
+    height: 40px;
+  }
+
+  .messagecontent{
+    height: auto;
+    overflow-x:hidden;
+    min-height: 355px;
+    overflow-y:scroll;
+  }
+
+  .mail,.mail_to,.mail_content{
+    cursor: pointer;
+  }
