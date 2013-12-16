@@ -82,6 +82,11 @@
     width: 100%;
     height: 100%;        
   } 
+  #page_title{
+    padding-top: 28px;
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+  }
 
   .scrollablediv{
     min-height:400px;
@@ -122,4 +127,9 @@
 
   .mail,.mail_to,.mail_content{
     cursor: pointer;
+  }
+  .page_title{
+    height: 180px;
+    padding: 0px;
+    margin: 0px;
   }
