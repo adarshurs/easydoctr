@@ -73,9 +73,9 @@ def SavePatientData(pat):
 # def send_simple_message():
 #     return requests.post(
 #         "https://api.mailgun.net/v2/samples.mailgun.org/messages",
-#         auth=("api", "key-484575zwsy10v23tqqc5droje97r-7n8"),
+#         auth=("api", ""),
 #         data={"from": "Excited User <postmaster@sandbox3948.mailgun.org>",
-#               "to": ["adarshrajurs@gmail.com"],
+#               "to": [""],
 #               "subject": "Hello",
 #               "text": "Testing some Mailgun awesomeness!"})
 
@@ -84,13 +84,13 @@ def SavePatientData(pat):
 # class Mailgun(object):	
 # 	def __init__(self):
 # 		self.url = "https://api.mailgun.net/v2/samples.mailgun.org/messages"
-# 		self.key = "key-484575zwsy10v23tqqc5droje97r-7n8"
+# 		self.key = ""
 # 		self.deadline = 5 
 		
 # 	def send_mail(self,to,subject,text):
 # 		payload = {}
-# 		payload['from'] =  "postmaster@sandbox3948.mailgun.org"
-# 		payload['to'] = "adarshrajurs@gmail.com"
+# 		payload['from'] =  
+# 		payload['to'] = 
 # 		payload['subject'] = subject
 # 		payload['text'] = text
 # 		encoded_payload = urllib.urlencode(payload)
@@ -107,7 +107,7 @@ def send_mail_gmail(mail_cont):
 	for Pat in mail_cont['To']:
 		message = mail.EmailMessage()
 		message.sender = user.email()
-		message.to = Pat['email'] # "adarshrajurs@gmail.com" #
+		message.to = Pat['email'] # 
 		message.body = mail_cont['email_text']
 		message.send()
 		msg = Message(Mail_Id = Pat['email'],To = Pat['email'],From = user.email(),Subject = mail_cont['email_sub'],Message_Content = mail_cont['email_text'])
