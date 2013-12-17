@@ -68,7 +68,12 @@
           </div>
         </div>
       
-        <div class="col-md-9" >
+        <div class="col-md-9">
+          <button id="show_all" class="btn btn-primary pull-left hide" type="buton">Show All</button>
+<!-- 
+          <form class="pull-right hide" action="/deleteallmessages" method="post">
+            <input class="btn btn-danger" type="submit" value="Delete All">
+          </form> -->
 
         </div>
 
@@ -89,9 +94,9 @@
                   <span style="float:left;width:25%;height:100%;" class="input-group-addon">
                     <input style="margin-top:25px;" class="select" type="checkbox">
                   </span>
-                  <div style="float:right;width:75%;height:100%;" class="patient-info list-group-item active">            
+                  <div style="float:right;width:75%;height:100%;" class="patient-info">
                     <h4>{{patient.Name}}</h4>
-                    <p class="email_add">{{patient.Email_Address}}</p>               
+                    <p class="email_add">{{patient.Email_Address}}</p>
                   </div>
                 </div>
               </a>      
@@ -107,8 +112,7 @@
         <div class="panel panel-info">
           <div class="panel-heading">All Messages</div>
           <div class="list-group scrollablediv">
-          {% for mail in all_mails %}
-        
+          {% for mail in all_mails %}       
             
             <div class="mail list-group-item" style="width:100%;display:inline-block;white-space:nowrap">
               <label class="mail_to" from={{mail.From}} style="width:25%;wrap:no-wrap;">{{mail.To}}</label>              

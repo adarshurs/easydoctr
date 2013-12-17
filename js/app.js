@@ -1,7 +1,6 @@
 $(function(){       
 
-        var recipients = [];
-        var isAllselected = false;
+        var recipients = [];       
 
         $(window).resize(function(){
           setScrollableDivHeight();
@@ -173,7 +172,7 @@ $(function(){
           $(".messagecomposercont").addClass('hide');
 
           $.ajax({
-            url:"/sendMessage",
+            url:"/sendmessage",
             type:"post",
             data:{mail:JSON.stringify(email_content)},           
             beforeSend:function(){
@@ -190,6 +189,40 @@ $(function(){
             }
           })
         });
+
+      $('#show_all').click(function(){
+        $('.mail').removeClass('hide');
+         $('#show_all').addClass('hide');
+         $('.patient-info').removeClass('active');
+      });
+
+      $('.patient-info').click(function(){        
+        var email_add = $(this).children('.email_add').text();
+        if (email_add) {
+            filterMessages(email_add);
+            $('.patient-info').removeClass('active');
+            $(this).addClass('active');
+        }
+
+        else{
+          alert("There are no messages with this account!")
+        }       
+
+      });
+
+      var filterMessages = function(email_add){
+          $('.mail').each(function(index,element){
+            //console.log($(element).children('.mail_to').text());
+            if ($(element).children('.mail_to').text() != email_add){
+              $(element).addClass("hide");
+            }
+            else{
+              $(element).removeClass("hide");
+            };
+          });
+
+          $('#show_all').removeClass('hide');
+      }
 
         var discardNewMessage = function(){
           $(".select").prop('checked',false);
